@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% block content %}
+  <h1>Hello World !</h1>
+
+  <h3>Displaying Scores</h3>
+
+  <form method="post" action=" {% url 'home' %} ">
+    {% csrf_token %}
+    <table>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Value</th>
+      </tr>
+      <tr>
+        <td></td>
+        {% if not form.instance.id %}
+          {% include 'save.html' %}
+        {% endif %}
+      </tr>
+      {% for score in scores %}
+        <tr>
+          {% if form.instance.id == score.id %}
+            {% include 'save.html' %}
+          {% else %}
+
+          <td>{{ score.id }}</td>
+          <td>Name : {{ score.name }}</td>
+          <td>Value : {{ score.value }}</td>
+          <td>
+            <button formnovalidate name="edit" value="{{ score.id }}">Edit</button>
+          </td>
+          <td>
+            <button formnovalidate name="delete" value="{{ score.id }}">Delete</button>
+          </td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+    </table>
+  </form>
+
+  <br />
+
+  <a href=" {% url 'about' %} ">Go To About Page</a>
+{% endblock %}
